@@ -1,0 +1,40 @@
+﻿@page
+@model InterportCargo.Web.Pages.IndexModel
+@{
+    ViewData["Title"] = "Welcome";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-5 fw-bold">Interport Cargo Services</h1>
+    <p class="lead text-muted">Freight Forwarding &amp; Customs Brokerage</p>
+</div>
+
+<div class="row justify-content-center g-4 mt-2">
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title">New Customer</h5>
+                <p class="card-text text-muted">Create an account to start submitting quotation requests.</p>
+                <a asp-page="/Auth/Register" class="btn btn-primary w-100">Register</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title">Customer Login</h5>
+                <p class="card-text text-muted">Log in to manage your quotation requests.</p>
+                <a asp-page="/Auth/CustomerLogin" class="btn btn-outline-primary w-100">Customer Login</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h5 class="card-title">Employee Login</h5>
+                <p class="card-text text-muted">Quotation officers — access your work portal here.</p>
+                <a asp-page="/Auth/EmployeeLogin" class="btn btn-outline-secondary w-100">Employee Login</a>
+            </div>
+        </div>
+    </div>
+</div>

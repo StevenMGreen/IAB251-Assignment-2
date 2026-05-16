@@ -1,0 +1,42 @@
+@page
+@model InterportCargo.Web.Pages.Employee.QuotationsModel
+@{
+    ViewData["Title"] = "Quotation Requests";
+}
+
+<h2>Quotation Requests</h2>
+
+@if (!Model.Requests.Any())
+{
+    <p class="text-muted mt-3">No quotation requests found.</p>
+}
+else
+{
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Client Name</th>
+                <th>Date Submitted</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var req in Model.Requests)
+            {
+                <tr>
+                    <td>@req.RequestReference</td>
+                    <td>@req.Customer.FirstName @req.Customer.FamilyName</td>
+                    <td>@req.SubmittedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                    <td>
+                        <span class="badge @(req.Status == "Pending" ? "bg-warning text-dark" : req.Status == "Accepted" ? "bg-success" : "bg-danger")">
+                            @req.Status
+                        </span>
+                    </td>
+                    <td><a asp-page="/Employee/ReviewRequest" asp-route-id="@req.Id" class="btn btn-sm btn-outline-primary">Review</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

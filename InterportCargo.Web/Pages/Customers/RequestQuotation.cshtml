@@ -1,0 +1,71 @@
+@page
+@model InterportCargo.Web.Pages.Customers.RequestQuotationModel
+@{
+    ViewData["Title"] = "Request a Quotation";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="mb-4">Request a Quotation</h2>
+
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <h5 class="mt-3">Shipment Details</h5>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Input.Source" class="form-label"></label>
+                    <input asp-for="Input.Source" class="form-control" />
+                    <span asp-validation-for="Input.Source" class="text-danger"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Input.Destination" class="form-label"></label>
+                    <input asp-for="Input.Destination" class="form-control" />
+                    <span asp-validation-for="Input.Destination" class="text-danger"></span>
+                </div>
+                <div class="col-md-4">
+                    <label asp-for="Input.NumberOfContainers" class="form-label"></label>
+                    <input asp-for="Input.NumberOfContainers" class="form-control" type="number" min="1" />
+                    <span asp-validation-for="Input.NumberOfContainers" class="text-danger"></span>
+                </div>
+                <div class="col-md-8">
+                    <label asp-for="Input.PackageNature" class="form-label"></label>
+                    <input asp-for="Input.PackageNature" class="form-control" placeholder="e.g. Electronics, Perishables" />
+                    <span asp-validation-for="Input.PackageNature" class="text-danger"></span>
+                </div>
+            </div>
+
+            <h5 class="mt-4">Nature of Job</h5>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="Input.JobNature" class="form-label"></label>
+                    <select asp-for="Input.JobNature" asp-items="Html.GetEnumSelectList<InterportCargo.Web.Models.JobNature>()" class="form-select">
+                        <option value="">-- Select --</option>
+                    </select>
+                    <span asp-validation-for="Input.JobNature" class="text-danger"></span>
+                </div>
+                <div class="col-md-3 d-flex align-items-center">
+                    <div class="form-check mt-3">
+                        <input asp-for="Input.RequiresPacking" class="form-check-input" type="checkbox" />
+                        <label asp-for="Input.RequiresPacking" class="form-check-label">Packing / Unpacking</label>
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex align-items-center">
+                    <div class="form-check mt-3">
+                        <input asp-for="Input.RequiresQuarantine" class="form-check-input" type="checkbox" />
+                        <label asp-for="Input.RequiresQuarantine" class="form-check-label">Quarantine Required</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Submit Request</button>
+                <a asp-page="/Customers/Dashboard" class="btn btn-outline-secondary ms-2">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

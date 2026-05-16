@@ -1,0 +1,24 @@
+@page
+@model InterportCargo.Web.Pages.Customers.DashboardModel
+@{
+    ViewData["Title"] = "My Dashboard";
+}
+
+<h2>Welcome, @Model.CustomerName</h2>
+
+@if (Model.UnreadMessages.Any())
+{
+    <div class="alert alert-info mt-3">
+        <strong>You have @Model.UnreadMessages.Count new message(s):</strong>
+        <ul class="mb-0 mt-2">
+            @foreach (var msg in Model.UnreadMessages)
+            {
+                <li>@msg.Content</li>
+            }
+        </ul>
+    </div>
+}
+
+<div class="mt-4">
+    <a asp-page="/Customers/RequestQuotation" class="btn btn-primary">Request a Quotation</a>
+</div>

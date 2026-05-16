@@ -1,0 +1,38 @@
+## .NET / ASP.NET Core
+*.user
+*.suo
+.vs/
+bin/
+obj/
+*.db
+*.db-shm
+*.db-wal
+
+## Build output
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+
+## Rider / JetBrains
+.idea/
+
+## VS Code
+.vscode/
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Secrets / environment
+appsettings.Development.json
+*.pfx
+secrets.json
