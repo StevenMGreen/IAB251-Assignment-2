@@ -41,12 +41,17 @@ public class EmployeeLoginModel(AppDbContext db, IHrApiService hrApiService) : P
             return Page();
         }
 
-        // Step 2: validate via HR API
+        // Step 2: confirm employee exists in HR system (existence = active)
         var hrEmployee = await hrApiService.GetEmployeeByEmailAsync(Input.Email);
 
-        bool hrValid = hrEmployee is { IsActive: true, Role: "QuotationOfficer" };
+        if (hrEmployee is null)
+        {
+            ModelState.AddModelError(string.Empty, "Login failed. Please check your credentials.");
+            return Page();
+        }
 
-        if (!hrValid)
+        // Step 3: confirm QuotationOfficer role from local system
+        if (!string.Equals(account!.Role, "QuotationOfficer", StringComparison.OrdinalIgnoreCase))
         {
             ModelState.AddModelError(string.Empty, "Login failed. Please check your credentials.");
             return Page();
@@ -54,7 +59,7 @@ public class EmployeeLoginModel(AppDbContext db, IHrApiService hrApiService) : P
 
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, hrEmployee!.FullName),
+            new(ClaimTypes.Name, $"{hrEmployee.FirstName} {hrEmployee.LastName}"),
             new(ClaimTypes.Email, hrEmployee.Email),
             new(ClaimTypes.Role, "QuotationOfficer")
         };

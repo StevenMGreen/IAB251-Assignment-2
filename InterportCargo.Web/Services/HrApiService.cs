@@ -3,19 +3,24 @@ using System.Net.Http.Json;
 namespace InterportCargo.Web.Services;
 
 /// <summary>
-/// Calls the external HR API to validate employee status and role.
-/// The base URL is configured via appsettings.json ("HrApi:BaseUrl").
+/// Calls the external HR API to validate employee existence.
+/// Base URL is configured via appsettings.json ("HrApi:BaseUrl").
+///
+/// The HR API has no email search endpoint, so we retrieve all employees
+/// and filter by email in memory. This is acceptable for a prototype with
+/// a small employee dataset.
 /// </summary>
 public class HrApiService(HttpClient httpClient) : IHrApiService
 {
-    public async Task<HrEmployee?> GetEmployeeByEmailAsync(string email)
+    public async Task<HrEmployeeSummary?> GetEmployeeByEmailAsync(string email)
     {
-        // TODO: update the endpoint path once the dummy HR API is provided
-        var response = await httpClient.GetAsync($"api/employees?email={Uri.EscapeDataString(email)}");
+        var employees = await httpClient
+            .GetFromJsonAsync<List<HrEmployeeSummary>>("api/employees");
 
-        if (!response.IsSuccessStatusCode)
+        if (employees is null)
             return null;
 
-        return await response.Content.ReadFromJsonAsync<HrEmployee>();
+        return employees.FirstOrDefault(e =>
+            string.Equals(e.Email, email, StringComparison.OrdinalIgnoreCase));
     }
 }
