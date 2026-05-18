@@ -1,4 +1,5 @@
 using InterportCargo.Web.Data;
+using InterportCargo.Web.Models;
 using InterportCargo.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +39,18 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
+
+    // Seed default employee account for testing (T3)
+    if (!db.EmployeeAccounts.Any())
+    {
+        db.EmployeeAccounts.Add(new EmployeeAccount
+        {
+            Email = "j.cooper@company.com",
+            KeyHash = BCrypt.Net.BCrypt.HashPassword("Test1234!"),
+            Role = "QuotationOfficer"
+        });
+        db.SaveChanges();
+    }
 }
 
 if (!app.Environment.IsDevelopment())
