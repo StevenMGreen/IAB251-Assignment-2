@@ -12,9 +12,12 @@ public class DashboardModel(AppDbContext db) : PageModel
 {
     public string CustomerName { get; set; } = string.Empty;
     public List<Message> UnreadMessages { get; set; } = [];
+    public List<QuotationRequest> QuotationRequests { get; set; } = [];
+    public bool JustSubmitted { get; set; }
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(bool submitted = false)
     {
+        JustSubmitted = submitted;
         CustomerName = User.Identity?.Name ?? string.Empty;
 
         var customerId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
@@ -24,9 +27,13 @@ public class DashboardModel(AppDbContext db) : PageModel
             .OrderByDescending(m => m.SentAt)
             .ToListAsync();
 
-        // Mark as read
         foreach (var msg in UnreadMessages)
             msg.IsRead = true;
+
+        QuotationRequests = await db.QuotationRequests
+            .Where(r => r.CustomerId == customerId)
+            .OrderByDescending(r => r.SubmittedAt)
+            .ToListAsync();
 
         await db.SaveChangesAsync();
     }

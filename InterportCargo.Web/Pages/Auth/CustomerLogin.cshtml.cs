@@ -29,12 +29,15 @@ public class CustomerLoginModel(AppDbContext db) : PageModel
         var customer = await db.Customers
             .FirstOrDefaultAsync(c => c.Email == Input.Email);
 
-        bool credentialsValid = customer is not null
-            && BCrypt.Net.BCrypt.Verify(Input.Password, customer.PasswordHash);
-
-        if (!credentialsValid)
+        if (customer is null)
         {
-            ModelState.AddModelError(string.Empty, "Invalid email or password.");
+            ModelState.AddModelError(string.Empty, "No account found with that email address.");
+            return Page();
+        }
+
+        if (!BCrypt.Net.BCrypt.Verify(Input.Password, customer.PasswordHash))
+        {
+            ModelState.AddModelError(string.Empty, "Incorrect password. Please try again.");
             return Page();
         }
 

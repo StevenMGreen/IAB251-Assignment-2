@@ -55,7 +55,7 @@ public class RegisterInput
     [Required, EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    [Required, Phone]
+    [Required, RegularExpression(@"^[0-9\s\+\-\(\)]{6,20}$", ErrorMessage = "Please enter a valid phone number.")]
     public string Phone { get; set; } = string.Empty;
 
     [Display(Name = "Company Name (optional)")]

@@ -6,6 +6,13 @@
 
 <h2>Welcome, @Model.CustomerName</h2>
 
+@if (Model.JustSubmitted)
+{
+    <div class="alert alert-success mt-3">
+        Your quotation request has been submitted successfully. A quotation officer will review it shortly.
+    </div>
+}
+
 @if (Model.UnreadMessages.Any())
 {
     <div class="alert alert-info mt-3">
@@ -19,6 +26,44 @@
     </div>
 }
 
-<div class="mt-4">
+<div class="mt-4 d-flex justify-content-between align-items-center">
+    <h4 class="mb-0">My Quotation Requests</h4>
     <a asp-page="/Customers/RequestQuotation" class="btn btn-primary">Request a Quotation</a>
 </div>
+
+@if (!Model.QuotationRequests.Any())
+{
+    <p class="text-muted mt-3">You have not submitted any quotation requests yet.</p>
+}
+else
+{
+    <table class="table table-hover mt-3">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Containers</th>
+                <th>Submitted</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var req in Model.QuotationRequests)
+            {
+                <tr>
+                    <td>@req.RequestReference</td>
+                    <td>@req.Source</td>
+                    <td>@req.Destination</td>
+                    <td>@req.NumberOfContainers</td>
+                    <td>@req.SubmittedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</td>
+                    <td>
+                        <span class="badge @(req.Status == "Pending" ? "bg-warning text-dark" : req.Status == "Accepted" ? "bg-success" : "bg-danger")">
+                            @req.Status
+                        </span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

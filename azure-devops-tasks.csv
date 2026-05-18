@@ -1,0 +1,62 @@
+Work Item Type,Title,Assigned To,State,Priority,Tags,Description
+User Story,T1: Main Screen Navigation,Steve,New,2,Sprint 1,"As a user I want to access the main screen so I can navigate to register, log in, or use system functions"
+Task,Design main landing page layout with Bootstrap cards,Steve,New,2,Sprint 1; T1,Create the Index.cshtml with three navigation cards for Register / Customer Login / Employee Login
+Task,Implement navigation routing between pages,Steve,New,2,Sprint 1; T1,Wire up asp-page links so all cards route to correct pages
+Task,Add Interport Cargo branding to layout,Steve,New,3,Sprint 1; T1,Update _Layout.cshtml with company name and navbar logout button
+User Story,T2: Customer Registration,Steve,New,1,Sprint 1,"As a new customer I want to register my details so I can submit quotation requests"
+Task,Create registration form UI with all required fields,Steve,New,1,Sprint 1; T2,"Build Register.cshtml with fields: First Name, Family Name, Email, Phone, Company Name, Address, Password"
+Task,Implement server-side field validation,Steve,New,1,Sprint 1; T2,Add DataAnnotations for required fields and correct data types
+Task,Implement BCrypt password hashing,Steve,New,1,Sprint 1; T2,Hash password using BCrypt.Net-Next before saving to database
+Task,Save new customer to SQLite database via EF Core,Steve,New,1,Sprint 1; T2,Add Customer entity to AppDbContext and persist on valid form submission
+Task,Handle duplicate email registration error,Steve,New,2,Sprint 1; T2,Check if email already exists before saving and return appropriate error message
+User Story,T3: Employee Login via HR API,,New,1,Sprint 1,"As an employee I want to log in using my employee account so I can access quotation management functions"
+Task,Create employee login form UI (email + employee key),,New,1,Sprint 1; T3,Build EmployeeLogin.cshtml with email and employee key fields
+Task,Implement local credential validation against EmployeeAccounts table,,New,1,Sprint 1; T3,Hash the entered key and compare against stored KeyHash in DB
+Task,Implement HR API client using HttpClient,,New,1,Sprint 1; T3,Complete HrApiService.cs to call HR API endpoint with employee email
+Task,Validate HR API response (active employee + QuotationOfficer role),,New,1,Sprint 1; T3,"Check IsNew == true and Role == QuotationOfficer from HR API response"
+Task,Create auth session on successful employee login,,New,1,Sprint 1; T3,Issue cookie with QuotationOfficer role claim and redirect to quotations page
+Task,Display generic error message on any login failure,,New,2,Sprint 1; T3,Return single generic error without revealing which check failed
+Task,Seed test employee account in database,,New,2,Sprint 1; T3,Add seeded EmployeeAccount record with hashed key for testing
+User Story,T4: Logout,Steve,New,2,Sprint 1,As a user I want to log out so I can securely leave the system
+Task,Implement logout POST handler,Steve,New,2,Sprint 1; T4,Sign out cookie and redirect to home page in Logout.cshtml.cs
+Task,Add logout button to shared navbar,Steve,New,2,Sprint 1; T4,Show logout button in _Layout.cshtml when user is authenticated
+User Story,T5: View All Quotations,,New,1,Sprint 1,"As a quotation officer I want to view all quotations with their reference, client name, date, and status"
+Task,Create quotations list page UI,,New,1,Sprint 1; T5,"Build Quotations.cshtml table with columns: Reference, Client Name, Date Submitted, Status"
+Task,Implement DB query for all quotation requests,,New,1,Sprint 1; T5,Query QuotationRequests table with Customer included ordered by date descending
+Task,Add status badge styling (Pending/Accepted/Rejected),,New,2,Sprint 1; T5,Colour-coded Bootstrap badges for each status value
+Task,Restrict quotations page to QuotationOfficer role,,New,1,Sprint 1; T5,Apply Authorize attribute restricting access to QuotationOfficer role only
+User Story,I1: Customer Login,Steve,New,1,Sprint 1,As an existing customer I want to log in so I can submit quotation requests using my saved information
+Task,Create customer login form UI,Steve,New,1,Sprint 1; I1,Build CustomerLogin.cshtml with email and password fields and validation summary
+Task,Implement credential lookup against Customer table,Steve,New,1,Sprint 1; I1,Query Customers by email and verify BCrypt password hash
+Task,Create auth session with Customer role on success,Steve,New,1,Sprint 1; I1,Issue cookie with Customer role claim and NameIdentifier set to customer ID
+Task,Display error message on failed login,Steve,New,2,Sprint 1; I1,Return generic invalid credentials message without revealing reason
+Task,Redirect to customer dashboard on successful login,Steve,New,2,Sprint 1; I1,RedirectToPage to /Customers/Dashboard after successful authentication
+Task,Show registration success message on redirect,Steve,New,3,Sprint 1; I1,Display success alert when redirected from Register page
+User Story,I2: Submit Quotation Request,Steve,New,1,Sprint 1,"As a customer I want to submit a quotation request by providing required details so I can receive an accurate quote"
+Task,Create quotation request form UI,Steve,New,1,Sprint 1; I2,"Build RequestQuotation.cshtml with fields: Source, Destination, Containers, Package Nature, Job Nature, Packing, Quarantine"
+Task,Implement form validation (required fields and data types),Steve,New,1,Sprint 1; I2,"Validate all required fields, container count >= 1, job nature selection"
+Task,Generate unique request reference number,Steve,New,2,Sprint 1; I2,Generate REQ-timestamp reference string on submission
+Task,Save quotation request to DB linked to logged-in customer,Steve,New,1,Sprint 1; I2,Persist QuotationRequest with CustomerId from auth claims
+Task,Redirect to customer dashboard after submission,Steve,New,2,Sprint 1; I2,Redirect to /Customers/Dashboard on successful save
+User Story,I3: Review Quotation Requests,,New,1,Sprint 1,As a quotation officer I want to review requests and accept or reject them
+Task,Create quotation review detail page UI,,New,1,Sprint 1; I3,Build ReviewRequest.cshtml showing all request details
+Task,Implement accept action and update status in DB,,New,1,Sprint 1; I3,POST handler sets Status to Accepted and saves
+Task,Implement reject action with rejection message,,New,1,Sprint 1; I3,POST handler sets Status to Rejected and creates Message record for customer
+Task,Display rejection message to customer on next login,,New,2,Sprint 1; I3,Customer dashboard reads unread Messages on load and marks them as read
+User Story,I4: Access Rate Schedule,,New,2,Sprint 1,As a quotation officer I want to access the rate schedule to prepare an accurate quotation
+Task,Load rate schedule data into system,,New,2,Sprint 1; I4,Add rate and charge data based on provided rate schedule document
+Task,Create rate schedule view page,,New,2,Sprint 1; I4,Display rates by container type with all charge line items
+Task,Create quotation preparation form,,New,1,Sprint 1; I4,"Build form with: customer details, container type, scope, charges, depot charges, LCL delivery"
+Task,Calculate total charges based on container type and selections,,New,1,Sprint 1; I4,Apply correct rates from schedule based on user selections
+User Story,Unit Tests - I1: Customer Login,Steve,New,1,Sprint 1,Black-box unit tests covering the customer login functionality
+Task,Test: valid credentials returns successful login,Steve,New,1,Sprint 1; Testing,Assert authentication succeeds with correct email and password
+Task,Test: wrong password returns failure,Steve,New,1,Sprint 1; Testing,Assert authentication fails and error shown when password is incorrect
+Task,Test: non-existent email returns failure,Steve,New,1,Sprint 1; Testing,Assert authentication fails gracefully when email not in database
+Task,Test: empty email field fails validation,Steve,New,1,Sprint 1; Testing,Assert ModelState invalid when email is empty
+Task,Test: empty password field fails validation,Steve,New,1,Sprint 1; Testing,Assert ModelState invalid when password is empty
+Task,Test: invalid email format fails validation,Steve,New,1,Sprint 1; Testing,Assert ModelState invalid when email is not a valid format
+Task,Test: successful login creates correct role claim,Steve,New,2,Sprint 1; Testing,Assert issued claims include Customer role and correct NameIdentifier
+User Story,Azure DevOps Board Setup,Steve,New,3,Sprint 1; Admin,Set up Azure DevOps project and sprint board for the team
+Task,Create Azure DevOps project and configure sprint dates,Steve,New,2,Sprint 1; Admin,"Set sprint start April 27 and end June 5, 2026"
+Task,Import user stories CSV into Azure DevOps,Steve,New,2,Sprint 1; Admin,Import provided CSV file from assignment into Boards
+Task,Break user stories into tasks and assign to team members,Steve,New,2,Sprint 1; Admin,Add all tasks with assignments as per team split agreement

@@ -39,7 +39,7 @@ public class RequestQuotationModel(AppDbContext db) : PageModel
         db.QuotationRequests.Add(request);
         await db.SaveChangesAsync();
 
-        return RedirectToPage("/Customers/Dashboard");
+        return RedirectToPage("/Customers/Dashboard", new { submitted = true });
     }
 }
 
