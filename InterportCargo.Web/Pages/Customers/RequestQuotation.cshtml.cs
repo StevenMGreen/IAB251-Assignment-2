@@ -30,10 +30,16 @@ public class RequestQuotationModel(AppDbContext db) : PageModel
             Source = Input.Source,
             Destination = Input.Destination,
             NumberOfContainers = Input.NumberOfContainers,
-            PackageNature = Input.PackageNature,
+            GoodsType = Input.GoodsType,
+            PackageWidth = Input.PackageWidth,
+            PackageHeight = Input.PackageHeight,
             JobNature = Input.JobNature,
             RequiresPacking = Input.RequiresPacking,
-            RequiresQuarantine = Input.RequiresQuarantine
+            RequiresQuarantine = Input.RequiresQuarantine,
+            QuarantineOrigin = Input.RequiresQuarantine ? Input.QuarantineOrigin : null,
+            QuarantineTreatmentHistory = Input.RequiresQuarantine ? Input.QuarantineTreatmentHistory : null,
+            RequiresFumigation = Input.RequiresFumigation,
+            FumigationPestThreats = Input.RequiresFumigation ? Input.FumigationPestThreats : null
         };
 
         db.QuotationRequests.Add(request);
@@ -55,15 +61,39 @@ public class QuotationRequestInput
     [Display(Name = "Number of Containers")]
     public int NumberOfContainers { get; set; }
 
-    [Required, Display(Name = "Nature of Package")]
-    public string PackageNature { get; set; } = string.Empty;
+    // Nature of package
+    [Required, Display(Name = "Goods Type")]
+    public string GoodsType { get; set; } = string.Empty;
 
+    [Required, Range(0.01, double.MaxValue, ErrorMessage = "Width must be greater than 0.")]
+    [Display(Name = "Width (m)")]
+    public decimal PackageWidth { get; set; }
+
+    [Required, Range(0.01, double.MaxValue, ErrorMessage = "Height must be greater than 0.")]
+    [Display(Name = "Height (m)")]
+    public decimal PackageHeight { get; set; }
+
+    // Nature of job
     [Required, Display(Name = "Import / Export")]
     public JobNature JobNature { get; set; }
 
-    [Display(Name = "Requires Packing")]
+    [Display(Name = "Packing / Unpacking Required")]
     public bool RequiresPacking { get; set; }
 
-    [Display(Name = "Requires Quarantine")]
+    // Quarantine
+    [Display(Name = "Quarantine Required")]
     public bool RequiresQuarantine { get; set; }
+
+    [Display(Name = "Quarantine Origin")]
+    public string? QuarantineOrigin { get; set; }
+
+    [Display(Name = "Treatment History")]
+    public string? QuarantineTreatmentHistory { get; set; }
+
+    // Fumigation
+    [Display(Name = "Fumigation Required")]
+    public bool RequiresFumigation { get; set; }
+
+    [Display(Name = "Potential Pest Threats")]
+    public string? FumigationPestThreats { get; set; }
 }

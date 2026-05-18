@@ -9,6 +9,7 @@ public class Customer
     public string Phone { get; set; } = string.Empty;
     public string? CompanyName { get; set; }
     public string Address { get; set; } = string.Empty;
+    public string Country { get; set; } = string.Empty;
     public string PasswordHash { get; set; } = string.Empty;
 
     public ICollection<QuotationRequest> QuotationRequests { get; set; } = [];

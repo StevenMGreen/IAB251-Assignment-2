@@ -34,6 +34,7 @@ public class RegisterModel(AppDbContext db) : PageModel
             Phone = Input.Phone,
             CompanyName = Input.CompanyName,
             Address = Input.Address,
+            Country = Input.Country,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(Input.Password)
         };
 
@@ -63,6 +64,9 @@ public class RegisterInput
 
     [Required]
     public string Address { get; set; } = string.Empty;
+
+    [Required]
+    public string Country { get; set; } = string.Empty;
 
     [Required, MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
     [DataType(DataType.Password)]
